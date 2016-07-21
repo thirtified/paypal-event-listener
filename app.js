@@ -11,12 +11,11 @@ var events = require('./routes/events');
 
 // configure PP
 nconf.argv().env().file({ file: 'config.json' });
-var ppClientId = nconf.get('clientId');
-var ppClientSecret = nconf.get('clientSecret');
+var ppClientId = nconf.get('clientId') || "";
+var ppClientSecret = nconf.get('clientSecret') || "";
 var ppEnv = nconf.get('env') || 'sandbox';
 
-console.log("Using PayPal environment %s, Client ID %s, Client Secret %s", ppEnv, ppClientId.substr(0,5) + "…", ppClientSecret.substr(0,5) + "…");
-
+console.log("Using PayPal %s environment (Client ID %s, Client Secret %s)", ppEnv, ppClientId.substr(0,5) + "…", ppClientSecret.substr(0,5) + "…");
 
 paypal.configure({
   'mode': ppEnv,

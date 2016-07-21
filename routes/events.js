@@ -3,13 +3,22 @@ var paypal = require('paypal-rest-sdk');
 
 var router = express.Router();
 
+var SIMULATOR_WEBHOOK_EVENT_ID = "WH-17W49296X1356610S-0MD256853V991784A";
+
 router.post('/listen', function(req, res, next) {
   console.log("event received", req.body);
   
   try {
     // Get the Webhook event id from the incoming event request
-    var webhookEventId = JSON.parse(req.body).id;
-
+    var webhookEventId = req.body.id;
+    console.log("webhook event id", webhookEventId);
+    
+    // shortcut for events sent by simulator
+    if (webhookEventId === SIMULATOR_WEBHOOK_EVENT_ID) {
+      res.sendStatus(200);
+      return;
+    }
+    
     paypal.notification.webhookEvent.get(webhookEventId, function (error, webhookEvent) {
       if (error) {
         console.log("Error (1)", error);
@@ -19,8 +28,7 @@ router.post('/listen', function(req, res, next) {
         res.sendStatus(503);
       } else {
         // Proceed to use the data from PayPal
-        console.log("Get webhookEvent Response");
-        console.log(JSON.stringify(webhookEvent));
+        console.log("Got webhookEvent Response", webhookEvent);
         res.sendStatus(200);
       }
     });
