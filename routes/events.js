@@ -3,7 +3,7 @@ var paypal = require('paypal-rest-sdk');
 
 var router = express.Router();
 
-router.post('/listen', function(req, res, next) {
+router.post('/listen*', function(req, res, next) {
   console.log("event received", req.body);
   
   try {
