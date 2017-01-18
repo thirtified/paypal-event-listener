@@ -6,7 +6,7 @@ var router = express.Router();
 var SIMULATOR_WEBHOOK_EVENT_ID = "WH-17W49296X1356610S-0MD256853V991784A";
 
 router.post('/listen*', function(req, res, next) {
-  console.log("event received", req.body);
+  console.log("event received", req.body, req.ip);
   
   try {
     // Get the Webhook event id from the incoming event request
